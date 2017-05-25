@@ -46,7 +46,7 @@ class BLE: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
 		self.data = Data()
 	}
 	
-	@objc private func scanTimeout() {
+	func scanTimeout() {
 		
 		print("[DEBUG] Scanning stopped")
 		self.centralManager.stopScan()
@@ -61,8 +61,6 @@ class BLE: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
 		}
 		
 		print("[DEBUG] Scanning started")
-		
-		// CBCentralManagerScanOptionAllowDuplicatesKey
 		
 		Timer.scheduledTimer(timeInterval: timeout,
 		                     target: self,
@@ -185,7 +183,8 @@ class BLE: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
 		print("[ERROR] Could not connect to peripheral \(peripheral.identifier.uuidString) error: \(error!.localizedDescription)")
 	}
 	
-	func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral) {
+	func centralManager(_ central: CBCentralManager,
+	                    didConnect peripheral: CBPeripheral) {
 		
 		print("[DEBUG] Connected to peripheral \(peripheral.identifier.uuidString)")
 		

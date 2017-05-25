@@ -186,8 +186,8 @@ class ScrollerController : UIViewController, UIScrollViewDelegate, BLEDelegate{
 			bleShield.connectToPeripheral(peripheral: bleShield.peripherals[0])
 		}else{
 			print("BLE has found 0 peripherals. Will retry in 5 sec")
-			bleShield.startScanning(timeout: 5)
-			bleTimer = Timer.scheduledTimer(withTimeInterval: 4,
+			bleShield.startScanning(timeout: 3)
+			bleTimer = Timer.scheduledTimer(withTimeInterval: 3,
 			                                repeats: false,
 			                                block: {
 												(timer) in
@@ -202,8 +202,8 @@ class ScrollerController : UIViewController, UIScrollViewDelegate, BLEDelegate{
 	//MARK:- BLEDelegate
 	
 	func bleDidUpdateState(){ // this gets called when bluetooth wakes up...
-		bleShield.startScanning(timeout: 5) // scan 5 sec
-		bleTimer = Timer.scheduledTimer(withTimeInterval: 4,
+		bleShield.startScanning(timeout: 3) // scan 5 sec
+		bleTimer = Timer.scheduledTimer(withTimeInterval: 3,
 		                                repeats: false,
 		                                block: {
 											(timer) in
