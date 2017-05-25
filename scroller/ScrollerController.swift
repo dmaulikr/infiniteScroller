@@ -76,13 +76,6 @@ class ScrollerController : UIViewController, UIScrollViewDelegate, BLEDelegate{
 			// 90 to 100 procent
 		else if UIDevice.current.batteryLevel * 100 > 90.0 && UIDevice.current.batteryLevel * 100 < 101.0 {contentView.backgroundColor = UIColor(red:0.40, green:0.95, blue:0.40, alpha:1.0)}
 		
-		// plek > eerste functie uit BLE
-		
-		/*
-		bleShield = [[BLE alloc] init];                                                 //BLE SHIELD OPHALEN
-		[bleShield controlSetup];                                                       //BLE CONTROL SETUP?
-		bleShield.delegate = self;
-		*/
 		bleSetup()
 		
 		print ("\(UIDevice.current.batteryLevel * 100)")
@@ -168,21 +161,6 @@ class ScrollerController : UIViewController, UIScrollViewDelegate, BLEDelegate{
 				userInfo:nil,
 				repeats:false)
 		}
-		
-		// plek voor functions objective c app
-		
-		func connectionTimer(_ timer: Timer) {
-			if bleShield.peripherals.count > 0 {
-				// bleShield.connectPeripheral(bleShield.peripherals[0])
-				bleShield.connectToPeripheral(peripheral: bleShield.peripherals[0])
-			}
-			else {
-				// activityIndicator.stopAnimating()
-				//navigationItem.leftBarButtonItem?.isEnabled = true
-			}
-		}
-		
-		
 	}
 	
 	func addScroll(_ timer: Timer){
@@ -203,12 +181,20 @@ class ScrollerController : UIViewController, UIScrollViewDelegate, BLEDelegate{
 	}
 	
 	func bleMakeConnection(){
-		print("BLE tries to make a connection")
 		if bleShield.peripherals.count > 0 {
 			print("BLE found \(bleShield.peripherals.count) peripherals")
 			bleShield.connectToPeripheral(peripheral: bleShield.peripherals[0])
 		}else{
-			print("BLE has found 0 peripherals")
+			print("BLE has found 0 peripherals. Will retry in 5 sec")
+			bleShield.startScanning(timeout: 5)
+			bleTimer = Timer.scheduledTimer(withTimeInterval: 4,
+			                                repeats: false,
+			                                block: {
+												(timer) in
+												timer.invalidate()
+												self.bleMakeConnection()
+			}
+			)
 		}
 	}
 	
@@ -216,8 +202,8 @@ class ScrollerController : UIViewController, UIScrollViewDelegate, BLEDelegate{
 	//MARK:- BLEDelegate
 	
 	func bleDidUpdateState(){ // this gets called when bluetooth wakes up...
-		bleShield.startScanning(timeout: 5) // scan 10 sec
-		bleTimer = Timer.scheduledTimer(withTimeInterval: 5,
+		bleShield.startScanning(timeout: 5) // scan 5 sec
+		bleTimer = Timer.scheduledTimer(withTimeInterval: 4,
 		                                repeats: false,
 		                                block: {
 											(timer) in
