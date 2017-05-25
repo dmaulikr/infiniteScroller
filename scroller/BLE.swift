@@ -42,7 +42,7 @@ class BLE: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
 	override init() {
 		super.init()
 		
-		self.centralManager = CBCentralManager(delegate: self, queue: nil)
+		self.centralManager =  CBCentralManager(delegate: self, queue: nil)
 		self.data = Data()
 	}
 	
@@ -71,7 +71,8 @@ class BLE: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
 		                     repeats: false)
 		
 		let services:[CBUUID] = [CBUUID(string: RBL_SERVICE_UUID)]
-		self.centralManager.scanForPeripherals(withServices: services, options: nil)
+		self.centralManager.scanForPeripherals(withServices: services,
+		                                       options: nil)
 		
 		return true
 	}
@@ -156,17 +157,18 @@ class BLE: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
 			
 		case .poweredOn:
 			print("[DEBUG] Central manager state: Powered on")
+			
 			break
 		}
 		
 		self.delegate?.bleDidUpdateState()
 	}
 	
-	private func centralManager(central: CBCentralManager,
-	                    didDiscoverPeripheral peripheral: CBPeripheral,
-	                    advertisementData: [String : AnyObject],
-	                    RSSI: NSNumber) {
-		print("[DEBUG] Find peripheral: \(peripheral.identifier.uuidString) RSSI: \(RSSI)")
+	func centralManager(_ central: CBCentralManager,
+	                    didDiscover peripheral: CBPeripheral,
+	                    advertisementData: [String : Any],
+	                    rssi RSSI: NSNumber) {
+		print("[DEBUG] Found peripheral: \(peripheral.identifier.uuidString) RSSI: \(RSSI)")
 		
 		let index = peripherals.index { $0.identifier.uuidString == peripheral.identifier.uuidString }
 		
@@ -180,7 +182,7 @@ class BLE: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
 	func centralManager(_ central: CBCentralManager,
 	                    didFailToConnect peripheral: CBPeripheral,
 	                    error: Error?) {
-		print("[ERROR] Could not connecto to peripheral \(peripheral.identifier.uuidString) error: \(error!.localizedDescription)")
+		print("[ERROR] Could not connect to peripheral \(peripheral.identifier.uuidString) error: \(error!.localizedDescription)")
 	}
 	
 	func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral) {
