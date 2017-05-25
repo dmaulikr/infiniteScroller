@@ -13,6 +13,7 @@
 		22537BFB1EA662E0009F7D59 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22537BF91EA662E0009F7D59 /* LaunchScreen.storyboard */; };
 		22537C031EA6631C009F7D59 /* ScrollerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22537C021EA6631C009F7D59 /* ScrollerController.swift */; };
 		22CD7DAB1ED6F8BF00E87A5B /* BLE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CD7DAA1ED6F8BF00E87A5B /* BLE.swift */; };
+		22CD7DAF1ED6FE1C00E87A5B /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22CD7DAD1ED6F9FA00E87A5B /* CoreBluetooth.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22CD7DAF1ED6FE1C00E87A5B /* CoreBluetooth.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
