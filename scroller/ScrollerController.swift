@@ -228,8 +228,7 @@ class ScrollerController : UIViewController, UIScrollViewDelegate, BLEDelegate{
 		if let data = data,
 			let input = String.init(data: data, encoding: .utf8){
 			print("BLE received \(input)")
-			bleShield.write(data: "Dankuwel Blend, ik ontving '\(input)' \n\r".data(using: .utf8)!)
-			
+			bleShield.write(data: "'\(input)'".data(using: .utf8)!)
 		}else{
 			print("BLE received bad data")
 		}
