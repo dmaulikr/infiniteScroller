@@ -30,6 +30,36 @@ class ScrollerController : UIViewController, UIScrollViewDelegate, BLEDelegate{
 	
 	
 	
+	var activityTimer: Timer! // create in viewDidLoad()!
+	var lastActivityTime: TimeInterval = Date().timeIntervalSince1970
+	
+	func updateActivityTimer(){
+		let maxSecondsOfInactivity = 3.0 // pas dit aan naar hoeveel seconden je wil wachten!
+		let now = Date().timeIntervalSince1970
+		if( now - lastActivityTime > maxSecondsOfInactivity){
+			// we have crossed the threshold!
+			lastActivityTime = Date().timeIntervalSince1970
+			
+			// ACTIVATE SCROLL HERE!
+			scrollView.contentOffset.y = 0.0
+			print("SCROLL BACK!!")
+		}
+	}
+	
+	func resetActivityTimer(){
+		lastActivityTime = Date().timeIntervalSince1970
+	}
+	
+	func setupActivityTimer(){
+		activityTimer = Timer.scheduledTimer(withTimeInterval: 1,
+		                                     repeats: true,
+		                                     block: {
+			(timer) -> Void in
+			self.updateActivityTimer();
+		}
+		)
+	}
+	
 	// HET BEGIN VAN DE CODE, DE START
 	
 	override func viewDidLoad() {
@@ -83,13 +113,15 @@ class ScrollerController : UIViewController, UIScrollViewDelegate, BLEDelegate{
 		pxLabel.text = "0px"
 		
 		
-		
+		setupActivityTimer()
 	}
 	
 	
 	// DE LOOP, HERHALING VAN DE CODE
 	
 	func scrollViewDidScroll(_ scrollView: UIScrollView) {
+		resetActivityTimer()
+		
 		let currentScroll = scrollView.contentOffset.y
 		let maxScroll = scrollView.contentSize.height - scrollView.frame.size.height
 		// (scrollView.contentSize.height - self.view.frame.size.height)
@@ -209,7 +241,7 @@ class ScrollerController : UIViewController, UIScrollViewDelegate, BLEDelegate{
 											(timer) in
 											timer.invalidate()
 											self.bleMakeConnection()
-									}
+		}
 		)
 		
 	}
